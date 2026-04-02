@@ -20,7 +20,6 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh "mvn -s $SETTINGS -f app/pom.xml clean install"
-		stash includes: 'app/target/*.war, name: 'built-war'
             }
         }
 
@@ -40,7 +39,7 @@ pipeline {
             steps {
                 sh """
                     ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-test.yml \
-                        --extra-vars "artifact=${env.WORKSPACE}/app/target/*.war"
+                        --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
                 """
             }
         }
@@ -61,7 +60,7 @@ pipeline {
             steps {
                 sh """
                     ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-prod.yml \
-                        --extra-vars "artifact=${env.WORKSPACE}/app/target/*.war"
+                        --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
                 """
             }
         }
