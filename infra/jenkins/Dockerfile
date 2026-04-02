@@ -10,7 +10,7 @@ COPY ./certs/* /etc/pki/ca-trust/source/anchors/
 
 RUN update-ca-trust
 
-
+RUN alternatives --set java $(readlink -f /usr/lib/jvm/java-21-openjdk*/bin/java)
 
 RUN mkdir -p /opt/jenkins
 
