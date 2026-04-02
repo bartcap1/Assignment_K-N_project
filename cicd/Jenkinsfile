@@ -24,60 +24,58 @@ pipeline {
         }
 
         stage('Publish to Nexus') {
-            when {
-                branch 'main'
-            }
+            when { branch 'main' }
             steps {
                 sh "mvn -s $SETTINGS -f app/pom.xml deploy"
             }
         }
 
         stage('Deploy to Test') {
-            when {
-                branch 'main'
-            }
+            when { branch 'main' }
             steps {
-                sh """
-		    
-		    echo "[CI/CD] Deploy to TEST"
-
-            	    cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war /tmp/app.war
-
-            	    echo "[CI/CD] Copying WAR into test1 using docker exec + cat"
-            	    docker exec test1 sh -c 'cat > /opt/tomcat/webapps/app.war' < /tmp/app.war
-
-            	    echo "[CI/CD] Restarting Test container"
-            	    docker restart test1
-
-                """
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'ssh-devops-pass',
+                        usernameVariable: 'SSH_USER',
+                        passwordVariable: 'SSH_PASS'
+                    )
+                ]) {
+                    sh """
+                        ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-test.yml \
+                            --extra-vars "ansible_user=${SSH_USER}" \
+                            --extra-vars "ansible_password=${SSH_PASS}" \
+			    --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'" \
+                            --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
+                    """
+                }
             }
         }
 
         stage('Approve Prod Deployment') {
-            when {
-                branch 'main'
-            }
+            when { branch 'main' }
             steps {
-                input message: "Czy wdrożyć na PROD?"
+                input message: "Do you want to deploy on PROD?"
             }
         }
 
         stage('Deploy to Prod') {
-            when {
-                branch 'main'
-            }
+            when { branch 'main' }
             steps {
-                sh """
-		    echo "[CI/CD] Deploy to TEST"
-
-                    cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war /tmp/app.war
-
-                    echo "[CI/CD] Copying WAR into test1 using docker exec + cat"
-                    docker exec test1 sh -c 'cat > /opt/tomcat/webapps/app.war' < /tmp/app.war
-
-                    echo "[CI/CD] Restarting Test container"
-                    docker restart prod1
-                """
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'ssh-devops-pass',
+                        usernameVariable: 'SSH_USER',
+                        passwordVariable: 'SSH_PASS'
+                    )
+                ]) {
+                    sh """
+                        ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-prod.yml \
+                            --extra-vars "ansible_user=${SSH_USER}" \
+                            --extra-vars "ansible_password=${SSH_PASS}" \
+			    --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'" \
+                            --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
+                    """
+                }
             }
         }
     }

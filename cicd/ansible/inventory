@@ -1,5 +1,6 @@
 [test]
-localhost ansible_connection=local
+test1 ansible_host=127.0.0.1 ansible_port=2223 ansible_user=devops
 
-[prod]
-localhost ansible_conncetion=local
+
+[test]
+test1 ansible_host=127.0.0.1 ansible_port=2224 ansible_user=devops

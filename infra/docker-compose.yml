@@ -36,11 +36,12 @@ services:
 #      - k-n_net
 
   test1:
-    build: ./test
+    build: 
+      context: ./test
     container_name: test1
     ports:
       - "8082:8080"
-      - "2222:22"
+      - "2223:22"
     networks:
       - k-n_net
 
@@ -49,7 +50,7 @@ services:
     container_name: prod1
     ports:
       - "8083:8080"
-      - "2223:22"
+      - "2224:22"
     networks:
       - k-n_net
 
