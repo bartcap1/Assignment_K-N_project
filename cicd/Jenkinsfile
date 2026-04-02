@@ -20,6 +20,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh "mvn -s $SETTINGS -f app/pom.xml clean install"
+		stash includes: 'app/target/*.war, name: 'built-war'
             }
         }
 
