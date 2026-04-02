@@ -38,9 +38,17 @@ pipeline {
             }
             steps {
                 sh """
+		    
 		    echo "[CI/CD] Deploy to TEST"
-                    docker cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war test1:/opt/tomcat/webapps/app.war
-                    docker restart test1
+
+            	    cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war /tmp/app.war
+
+            	    echo "[CI/CD] Copying WAR into test1 using docker exec + cat"
+            	    docker exec test1 sh -c 'cat > /opt/tomcat/webapps/app.war' < /tmp/app.war
+
+            	    echo "[CI/CD] Restarting Test container"
+            	    docker restart test1
+
                 """
             }
         }
@@ -61,8 +69,14 @@ pipeline {
             steps {
                 sh """
 		    echo "[CI/CD] Deploy to TEST"
-                    docker cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war test1:/opt/tomcat/webapps/app.war
-                    docker restart test1
+
+                    cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war /tmp/app.war
+
+                    echo "[CI/CD] Copying WAR into test1 using docker exec + cat"
+                    docker exec test1 sh -c 'cat > /opt/tomcat/webapps/app.war' < /tmp/app.war
+
+                    echo "[CI/CD] Restarting Test container"
+                    docker restart prod1
                 """
             }
         }
