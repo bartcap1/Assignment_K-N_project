@@ -1,0 +1,50 @@
+services:
+
+  nexus1:
+    build: ./nexus
+    container_name: nexus1
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - k-n_net 
+
+  jenkins_c:
+    build: ./jenkins
+    container_name: jenkins_c
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins-data:/jenkins-data
+      - /var/run/docker.sock:/var/run/docker.sock # -> part of assignment, necessary
+    networks:
+      - k-n_net
+
+#  jenkins_agent1:
+
+  test1:
+    build: ./test
+    container_name: test1
+    ports:
+      - "8082:8080"
+    networks:
+      - k-n_net
+
+  prod1:
+    build: ./prod
+    container_name: prod1
+    ports:
+      - "8083:8080"
+    networks:
+      - k-n_net
+
+
+networks:
+  k-n_net:
+    driver: bridge
+
+volumes:
+  nexus-data:
+  jenkins-data:
