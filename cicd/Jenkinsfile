@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh "mvn -s $SETTINGS clean install"
+                sh "mvn -s $SETTINGS -f app/pom.xml clean install"
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh "mvn -s $SETTINGS deploy"
+                sh "mvn -s $SETTINGS -f app/pom.xml deploy"
             }
         }
 
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh """
                     ansible-playbook -i ansible/inventory ansible/deploy-test.yml \
-                        --extra-vars "artifact=target/*.war"
+                        --extra-vars "artifact=app/target/*.war"
                 """
             }
         }
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 sh """
                     ansible-playbook -i ansible/inventory ansible/deploy-prod.yml \
-                        --extra-vars "artifact=target/*.war"
+                        --extra-vars "artifact=app/target/*.war"
                 """
             }
         }
