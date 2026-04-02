@@ -38,8 +38,9 @@ pipeline {
             }
             steps {
                 sh """
-                    ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-test.yml \
-                        --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
+		    echo "[CI/CD] Deploy to TEST"
+                    docker cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war test1:/opt/tomcat/webapps/app.war
+                    docker restart test1
                 """
             }
         }
@@ -59,8 +60,9 @@ pipeline {
             }
             steps {
                 sh """
-                    ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-prod.yml \
-                        --extra-vars "artifact=${env.WORKSPACE}/app/target/myapp-1.0.0.war"
+		    echo "[CI/CD] Deploy to TEST"
+                    docker cp ${env.WORKSPACE}/app/target/myapp-1.0.0.war test1:/opt/tomcat/webapps/app.war
+                    docker restart test1
                 """
             }
         }
