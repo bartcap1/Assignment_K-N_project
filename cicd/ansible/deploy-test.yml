@@ -1,0 +1,12 @@
+- hosts: test
+  become: yes
+
+  tasks:
+    - name: Copy app to test tomcat
+      copy:
+        src: "{{ artifact }}"
+        dest: /opt/tomcat/webapps/app.war
+        mode: '0644'
+
+    - name: Restart Test container
+      shell: docker restart test
