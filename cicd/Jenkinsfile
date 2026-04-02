@@ -38,7 +38,7 @@ pipeline {
             }
             steps {
                 sh """
-                    ansible-playbook -i ansible/inventory cicd/ansible/deploy-test.yml \
+                    ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-test.yml \
                         --extra-vars "artifact=app/target/*.war"
                 """
             }
@@ -59,7 +59,7 @@ pipeline {
             }
             steps {
                 sh """
-                    ansible-playbook -i ansible/inventory cicd/ansible/deploy-prod.yml \
+                    ansible-playbook -i cicd/ansible/inventory cicd/ansible/deploy-prod.yml \
                         --extra-vars "artifact=app/target/*.war"
                 """
             }
