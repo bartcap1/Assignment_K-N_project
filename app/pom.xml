@@ -23,5 +23,12 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://nexus1:8081/repository/k-n-maven-artifacts/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
