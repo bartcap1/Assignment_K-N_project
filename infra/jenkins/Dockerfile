@@ -1,6 +1,6 @@
 FROM rockylinux/rockylinux:9
 
-RUN dnf install -y java-21-openjdk git wget unzip maven docker && dnf clean all
+RUN dnf install -y java-21-openjdk git wget unzip maven docker ansible && dnf clean all
 
 RUN useradd -m -d /var/jenkins_home jenkins
 
