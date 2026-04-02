@@ -34,7 +34,7 @@ pipeline {
             when { branch 'main' }
             steps {
                 withCredentials([
-                    sshUserPrivateKey(
+                    usernamePassword(
                         credentialsId: 'ssh-devops-pass',
                         usernameVariable: 'SSH_USER',
                         passwordVariable: 'SSH_PASS'
@@ -62,7 +62,7 @@ pipeline {
             when { branch 'main' }
             steps {
                 withCredentials([
-                    sshUserPrivateKey(
+                    usernamePassword(
                         credentialsId: 'ssh-devops-pass',
                         usernameVariable: 'SSH_USER',
                         passwordVariable: 'SSH_PASS'
