@@ -1,5 +1,4 @@
 - hosts: test
-  become: yes
 
   tasks:
     - name: Copy app to test tomcat
