@@ -23,6 +23,17 @@ services:
       - k-n_net
 
 #  jenkins_agent1:
+#    image: jenkins/inbound-agent:latest
+#    container_name: jenkins_agent1
+#    environment:
+#      - JENKINS_URL=http://jenkins_c:8080/
+#      - JENKINS_AGENT_NAME=agent_1
+#      - JENKINS_SECRET="${JENKINS_SEC}"
+#      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+#    depends_on:
+#      - jenkins_c
+#    networks:
+#      - k-n_net
 
   test1:
     build: ./test
