@@ -46,7 +46,8 @@ services:
       - k-n_net
 
   prod1:
-    build: ./prod
+    build: 
+      context: ./prod
     container_name: prod1
     ports:
       - "8083:8080"
