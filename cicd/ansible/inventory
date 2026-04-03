@@ -1,6 +1,6 @@
 [test]
-test1 ansible_host=172.17.191.255 ansible_port=2223 ansible_user=devops
+test1 ansible_host=test1 ansible_port=2223 ansible_user=devops
 
 
 [prod]
-prod1 ansible_host=172.17.191.255 ansible_port=2224 ansible_user=devops
+prod1 ansible_host=prod1 ansible_port=2224 ansible_user=devops
