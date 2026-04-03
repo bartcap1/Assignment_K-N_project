@@ -87,6 +87,17 @@
 	5. Dodać permanentny kontener jenkins agent z 2 workerami i zmniejsz liczbę workerów na jenkinsie do 0
 		- Problem z secretem, status 403 forbidden❗
 
-9. Przygotować playbook ansible za pomocą którego można zdeployować zbudowany artefakt na środowisko + inventory (chodzi o poznanie technologii)
-10. SonarQube i analiza kodu*
-11. Narzędzie do zbierania logów*
+9. Przygotować playbook ansible za pomocą którego można zdeployować zbudowany artefakt na środowisko + inventory (chodzi o poznanie technologii) ✅
+	- bardzo proste playbooki:
+		- deploy-test.yml
+		- deply-prod.yml
+
+10. SonarQube i analiza kodu* ✅
+	- utworzenie kontenera sonarqube z projektem w UI
+	- wygenerowano token, który został przeniesiony do Jenkins Credential
+	- W Jenkinsfile analiza odbywa się po build & test
+
+11. Narzędzie do zbierania logów* ✅
+	- grafana, loki i promtail
+	- skonfigurowane tak, żeby czytać wszystkie logi dockera
+	- konfiguracja w docker-compose
