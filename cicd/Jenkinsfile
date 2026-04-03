@@ -31,7 +31,7 @@ pipeline {
             		sh """
                 		mvn -s $SETTINGS -f app/pom.xml clean verify sonar:sonar \
                   		-Dsonar.projectKey=myapp \
-                  		-Dsonar.host.url=http://sonarqube1:9000 \
+                  		-Dsonar.host.url=http://localhost:9000 \
                   		-Dsonar.login=${SONAR_TOKEN}
             		"""
         		}
