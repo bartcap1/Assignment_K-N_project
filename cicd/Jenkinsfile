@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         SETTINGS = credentials('maven-settings')
+	SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
@@ -22,6 +23,20 @@ pipeline {
                 sh "mvn -s $SETTINGS -f app/pom.xml clean install"
             }
         }
+
+	stage('SonarQube Analysis') {
+    		when { branch 'main' }
+    		steps {
+        		withSonarQubeEnv('MySonar') {
+            		sh """
+                		mvn -s $SETTINGS -f app/pom.xml clean verify sonar:sonar \
+                  		-Dsonar.projectKey=myapp \
+                  		-Dsonar.host.url=http://sonarqube:9000 \
+                  		-Dsonar.login=${SONAR_TOKEN}
+            		"""
+        		}
+    		}
+	}
 
         stage('Publish to Nexus') {
             when { branch 'main' }
